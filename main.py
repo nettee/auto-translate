@@ -1,8 +1,12 @@
-from autotrans.auto_translator import AutoTranslator
+import click
+
+from autotrans.translator import AutoTranslator
+
+
+@click.command()
+@click.argument('src')
+def main(src):
+    translator = AutoTranslator(src)
 
 if __name__ == '__main__':
-
-    translator = AutoTranslator()
-    text = 'Hello, world.'
-    trans = translator.translate(text)
-    print(text, '->', trans)
+    main()

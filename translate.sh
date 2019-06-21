@@ -12,5 +12,5 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-python main.py
+python main.py $@
 
