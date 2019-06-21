@@ -5,6 +5,8 @@ from urllib.parse import urlparse
 import requests
 import googletrans
 
+from autotrans.document import Document
+
 current_path = os.path.realpath(__file__)
 workspace = Path(current_path).parent / 'workspace'
 Path.mkdir(workspace, exist_ok=True)
@@ -18,13 +20,12 @@ class AutoTranslator:
 
     def parse_src(self, src):
         file = Path(src)
-        if file.exists():
-            print('From file', src)
-        else:
-            print('From url', src)
-            self.download_to_workspace(src)
+        if not file.exists():
+            file = self.download_to_workspace(src)
+        document = Document(file)
 
-    def download_to_workspace(self, url):
+    @staticmethod
+    def download_to_workspace(url):
         r = requests.get(url)
         r.raise_for_status()
         filename = os.path.basename(urlparse(url).path)
@@ -35,6 +36,7 @@ class AutoTranslator:
         with file.open('wb') as of:
             of.write(r.content)
         print('Saved content to file', filename)
+        return file
 
     def translate(self, text):
         trans = self.translator.translate(text, dest='zh-CN')
