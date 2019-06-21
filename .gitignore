@@ -3,3 +3,7 @@
 
 # Python virtualenv
 env3.5/
+
+# Python intermediate files
+__pycache__/
+*.pyc
